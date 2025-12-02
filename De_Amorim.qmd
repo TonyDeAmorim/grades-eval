@@ -354,3 +354,20 @@ Q21 <-
 
 ## Question 22
 
+```{r}
+
+grp <- max(abs(Q21$cor)) # group 15
+
+Q22 <-
+  Q19 |> 
+  filter(group==15)
+
+ggplot(Q22, aes(`Animal Lore and Totemism`,`Earth Magic and Fertility Rituals`))+
+  geom_point(alpha = 0.6)+
+  theme_clean()+
+  labs(
+    title = "Average grades in Earth Magic and Fertility Rituals as a function the average grades in Animal Lore and Totemism in group 15"
+  )
+
+```
+
