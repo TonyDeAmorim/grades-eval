@@ -50,4 +50,14 @@ students <-
 The birth_date column of the students data frame is of class `r class(students$birth_date)`.
 The birth_date column of the students data frame is of class `r class(students$sex)`.
 
+# Grades
+## Question 4 
+
+```{r}
+
+grades <- read_delim("Database/grades.csv", 
+    delim = ":", 
+    na = "$")
+
+```
 
