@@ -111,4 +111,17 @@ ggplot(students, aes(x=age))+
 
 ```
 
+## Question 8
+
+```{r}
+
+age_median <-
+  students |> 
+  summarise(age_median = median(age), .by = group) |> 
+  arrange(group)
+
+knitr::kable(age_median)
+
+```
+
 
