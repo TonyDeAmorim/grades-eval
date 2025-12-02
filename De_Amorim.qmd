@@ -8,10 +8,21 @@ format: html
 
 ```{r}
 #| label: data loading
-
+#| message: false
+#| warning: false
+  
 library(readr)
 courses <- read_csv("Database/courses.csv")
 
+
+```
+
+## Question 2
+```{r}
+#| label: data display
+
+library(knitr)
+kable(courses)
 
 ```
 
