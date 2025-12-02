@@ -281,3 +281,14 @@ ggplot(grades_per_student_16, aes(n_grades, n))+
   )
 ```
 
+## Question 17
+
+```{r}
+ggplot(grades_per_student_15, aes(group,n_grades, fill = group))+
+  geom_violin()+
+  theme_clean()+
+  labs(
+    title = "Distribution of number of grades by group"
+  )
+```
+
