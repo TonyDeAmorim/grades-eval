@@ -3,6 +3,9 @@ title: "De Amorim"
 format: html
 toc: true
 ---
+
+Access the repo [here](https://github.com/TonyDeAmorim/grades-eval)
+
 # Introduction
 ## Study organisation
 ### Question 1
@@ -155,8 +158,6 @@ The data set contains  `r sum(!is.na(grades$grade))` grades.
 merged <- 
   students |>
   left_join(grades, by = "id") 
-  
-
 
 merged_Q11 <-
   merged |> 
@@ -173,3 +174,21 @@ ggplot(merged_Q11, aes(mean_grade, group))+
 
 ```
 
+## Question 12
+
+```{r}
+merged_Q12 <-
+  merged |> 
+  left_join(courses, by = "course_id") 
+
+ggplot(merged_Q12, aes(x=grade))+
+  geom_histogram( na.rm=TRUE, binwidth = 0.7)+
+  facet_wrap(~trimester)+
+  theme_clean()+
+  labs(
+    title = "Distribution of grades by trimester"
+  )
+  
+```
+
+# Attendance analysis
