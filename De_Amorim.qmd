@@ -46,7 +46,7 @@ students <-
                       levels = c("M", "F"),
                       labels = c("Male", "Female")),
          group = factor(group),
-         id = as.integer(group))
+         id = as.integer(id))
 
 ```
 
@@ -117,11 +117,12 @@ ggplot(students, aes(x=age))+
 
 age_median <-
   students |> 
-  summarise(age_median = median(age), .by = group) |> 
+  summarise(age_median = median(age), .by = group) |>
+  mutate(age_median = as.integer(age_median)) |> 
   arrange(group)
 
 knitr::kable(age_median)
 
 ```
 
-
+## Question 9
