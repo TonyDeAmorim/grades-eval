@@ -304,3 +304,25 @@ ggplot(grades_per_student_15, aes(group,n_grades, fill = group))+
   facet_wrap(~sex)
 ```
 
+# Grade analysis
+## Question 19
+
+```{r}
+
+Q19 <-
+  merged_full |> 
+  reframe(mean = mean(grade, na.rm =TRUE), .by = c(id,course),group = first(group)) |> 
+  pivot_wider(
+    names_from = course,
+    values_from = mean
+  ) 
+
+Q19_sliced <-
+  Q19 |>
+  select(1:4)
+
+knitr::kable(Q19_sliced)
+  
+
+```
+
