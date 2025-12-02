@@ -389,3 +389,22 @@ ggplot(final, aes(final_grade, fill = sex)) +
 ```
 
 ## Question 26
+
+```{r}
+
+Q26 <-
+  Q19 |>
+  mutate(
+    final_grade = rowMeans(across(!c(id, group, sex)),
+      na.rm = TRUE
+    )) |> 
+  mutate(
+    pass_final = if_all(
+      !c(id, group, sex,final_grade),     
+      ~ .x > 5
+    )
+  )|>
+  mutate(pass_final = if_else(final_grade > 10, "Pass", "Fail"))
+
+```
+
