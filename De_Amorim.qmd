@@ -16,11 +16,9 @@ Access the repo [here](https://github.com/TonyDeAmorim/grades-eval)
 #| label: data loading
 #| message: false
 #| warning: false
-  
+
 library(readr)
 courses <- read_csv("Database/courses.csv")
-
-
 ```
 
 ### Question 2
@@ -30,7 +28,6 @@ courses <- read_csv("Database/courses.csv")
 
 library(knitr)
 kable(courses)
-
 ```
 
 ## Students
@@ -48,12 +45,14 @@ spec(students)
 
 students <-
   students |>
-  mutate(sex = factor(sex, 
-                      levels = c("M", "F"),
-                      labels = c("Male", "Female")),
-         group = factor(group),
-         id = as.integer(id))
-
+  mutate(
+    sex = factor(sex,
+      levels = c("M", "F"),
+      labels = c("Male", "Female")
+    ),
+    group = factor(group),
+    id = as.integer(id)
+  )
 ```
 
 The birth_date column of the students data frame is of class `r class(students$birth_date)`. The birth_date column of the students data frame is of class `r class(students$sex)`.
@@ -66,10 +65,10 @@ The birth_date column of the students data frame is of class `r class(students$b
 #| message: false
 #| warning: false
 
-grades <- read_delim("Database/grades.csv", 
-    delim = ":", 
-    na = "$")
-
+grades <- read_delim("Database/grades.csv",
+  delim = ":",
+  na = "$"
+)
 ```
 
 # Student population analysis
@@ -82,22 +81,21 @@ grades <- read_delim("Database/grades.csv",
 library(ggplot2)
 library(ggthemes)
 
-ggplot(students, aes(y = group))+
-  geom_bar(aes(fill = group))+
-  theme_clean()+
+ggplot(students, aes(y = group)) +
+  geom_bar(aes(fill = group)) +
+  theme_clean() +
   labs(
     title = "Distribution of students by group"
-  )+
+  ) +
   theme(legend.position = "none")
-
 ```
 
 ## Question 6
 
 ```{r}
-ggplot(students, aes(y = group))+
-  geom_bar(aes(fill = sex))+
-  theme_clean()+
+ggplot(students, aes(y = group)) +
+  geom_bar(aes(fill = sex)) +
+  theme_clean() +
   labs(
     title = "Distribution of students by group and by gender"
   )
@@ -109,44 +107,39 @@ ggplot(students, aes(y = group))+
 library(lubridate)
 
 students <-
-  students |> 
+  students |>
   mutate(age = round(time_length(today() - birth_date, unit = "year"), 1))
 
-ggplot(students, aes(x=age))+
-  geom_density()+
-  theme_clean()+
+ggplot(students, aes(x = age)) +
+  geom_density() +
+  theme_clean() +
   labs(
     title = "Distribution of students by age"
   )
-
 ```
 
 ## Question 8
 
 ```{r}
-
 age_median <-
-  students |> 
+  students |>
   summarise(age_median = median(age), .by = group) |>
-  mutate(age_median = as.integer(age_median)) |> 
+  mutate(age_median = as.integer(age_median)) |>
   arrange(group)
 
 knitr::kable(age_median)
-
 ```
 
 ## Question 9
 
 ```{r}
-
 max_table <-
-  students |> 
-  slice_max(age, by = group) |> 
-  select(!birth_date) |> 
+  students |>
+  slice_max(age, by = group) |>
+  select(!birth_date) |>
   arrange(desc(age))
 
 knitr::kable(max_table)
-
 ```
 
 # Simple Grade analysis
@@ -158,41 +151,37 @@ The data set contains `r sum(!is.na(grades$grade))` grades.
 ## Question 11
 
 ```{r}
-
-merged <- 
+merged <-
   students |>
-  left_join(grades, by = "id") 
+  left_join(grades, by = "id")
 
 merged_Q11 <-
-  merged |> 
-  filter(course_id == 7) |> 
-  summarise(mean_grade = mean(grade, na.rm = TRUE), .by = group )
+  merged |>
+  filter(course_id == 7) |>
+  summarise(mean_grade = mean(grade, na.rm = TRUE), .by = group)
 
-ggplot(merged_Q11, aes(mean_grade, group))+
-  geom_col()+
-  theme_clean()+
+ggplot(merged_Q11, aes(mean_grade, group)) +
+  geom_col() +
+  theme_clean() +
   labs(
     title = "Distribution of grades in Hunting and Gathering Skills by group"
   )
-
-
 ```
 
 ## Question 12
 
 ```{r}
 merged_full <-
-  merged |> 
-  left_join(courses, by = "course_id") 
+  merged |>
+  left_join(courses, by = "course_id")
 
-ggplot(merged_full, aes(x=grade))+
-  geom_histogram( na.rm=TRUE, binwidth = 0.7)+
-  facet_wrap(~trimester)+
-  theme_clean()+
+ggplot(merged_full, aes(x = grade)) +
+  geom_histogram(na.rm = TRUE, binwidth = 0.7) +
+  facet_wrap(~trimester) +
+  theme_clean() +
   labs(
     title = "Distribution of grades by trimester"
   )
-  
 ```
 
 # Attendance analysis
@@ -205,21 +194,17 @@ grades_per_student <-
   reframe(
     n_grades = sum(!is.na(grade)),
     group = first(group),
-    sex   = first(sex),
+    sex = first(sex),
     .by = id
   ) |>
   select(id, group, sex, n_grades) |>
-  arrange(id) 
+  arrange(id)
 
 grades_per_student_13 <-
-  grades_per_student |> 
-  slice_tail(n = 10) 
+  grades_per_student |>
+  slice_tail(n = 10)
 
 knitr::kable(grades_per_student_13)
-
-
-
-
 ```
 
 
@@ -234,10 +219,10 @@ knitr::kable(grades_per_student_13)
 ## Question 14
 
 ```{r}
-ggplot(grades_per_student, aes(n_grades))+
-  geom_histogram(binwidth = 0.5)+
-  facet_wrap(~sex)+
-  theme_clean()+
+ggplot(grades_per_student, aes(n_grades)) +
+  geom_histogram(binwidth = 0.5) +
+  facet_wrap(~sex) +
+  theme_clean() +
   labs(
     title = "Distribution of number of grades by gender"
   )
@@ -249,19 +234,19 @@ ggplot(grades_per_student, aes(n_grades))+
 ```{r}
 grades_per_student_15 <-
   merged_full |>
-  filter(course_id == 8) |> 
+  filter(course_id == 8) |>
   reframe(
     n_grades = sum(!is.na(grade)),
     group = first(group),
-    sex   = first(sex),
+    sex = first(sex),
     .by = id
   ) |>
   select(id, group, sex, n_grades) |>
-  arrange(desc(n_grades)) 
+  arrange(desc(n_grades))
 
 grades_per_student_15_sliced <-
-  grades_per_student_15 |> 
-  slice_tail(n = 5) 
+  grades_per_student_15 |>
+  slice_tail(n = 5)
 
 knitr::kable(grades_per_student_15_sliced)
 ```
@@ -269,13 +254,13 @@ knitr::kable(grades_per_student_15_sliced)
 ## Question 16
 
 ```{r}
-grades_per_student_16 <- 
-  grades_per_student_15 |> 
-  summarise(n = n(), .by =n_grades)
+grades_per_student_16 <-
+  grades_per_student_15 |>
+  summarise(n = n(), .by = n_grades)
 
-ggplot(grades_per_student_16, aes(n_grades, n))+
-  geom_col()+
-  theme_clean()+
+ggplot(grades_per_student_16, aes(n_grades, n)) +
+  geom_col() +
+  theme_clean() +
   labs(
     title = "Distribution of number of grades"
   )
@@ -284,9 +269,9 @@ ggplot(grades_per_student_16, aes(n_grades, n))+
 ## Question 17
 
 ```{r}
-ggplot(grades_per_student_15, aes(group,n_grades, fill = group))+
-  geom_violin()+
-  theme_clean()+
+ggplot(grades_per_student_15, aes(group, n_grades, fill = group)) +
+  geom_violin() +
+  theme_clean() +
   labs(
     title = "Distribution of number of grades by group"
   )
@@ -295,12 +280,12 @@ ggplot(grades_per_student_15, aes(group,n_grades, fill = group))+
 ## Question 18
 
 ```{r}
-ggplot(grades_per_student_15, aes(group,n_grades, fill = group))+
-  geom_violin()+
-  theme_clean()+
+ggplot(grades_per_student_15, aes(group, n_grades, fill = group)) +
+  geom_violin() +
+  theme_clean() +
   labs(
     title = "Distribution of number of grades by group"
-  )+
+  ) +
   facet_wrap(~sex)
 ```
 
@@ -308,83 +293,84 @@ ggplot(grades_per_student_15, aes(group,n_grades, fill = group))+
 ## Question 19
 
 ```{r}
-
 Q19 <-
-  merged_full |> 
-  reframe(mean = mean(grade, na.rm =TRUE), .by = c(id,course),group = first(group), sex = first(sex)) |> 
+  merged_full |>
+  reframe(mean = mean(grade, na.rm = TRUE), .by = c(id, course), group = first(group), sex = first(sex)) |>
   pivot_wider(
     names_from = course,
     values_from = mean
-  ) 
+  )
 
 Q19_sliced <-
   Q19 |>
-  select(1:4) |> 
-  slice_tail(n=10)
+  select(1:4) |>
+  slice_tail(n = 10)
 
 knitr::kable(Q19_sliced)
-  
-
 ```
 
 ## Question 20
 
 ```{r}
-
-ggplot(Q19, aes(`Astronomy and Celestial Navigation`, `Drumming and Music`))+
-  geom_point(alpha = 0.6)+
-  theme_clean()+
+ggplot(Q19, aes(`Astronomy and Celestial Navigation`, `Drumming and Music`)) +
+  geom_point(alpha = 0.6) +
+  theme_clean() +
   labs(
     title = "Average grades in Drumming and Music as a function of the average grades in As-
 tronomy and Celestial Navigation"
   )
-
 ```
 
 ## Question 21
 
 ```{r}
 Q21 <-
-  Q19 |> 
-  summarise(cor = cor(`Animal Lore and Totemism`,`Earth Magic and Fertility Rituals`), .by =group) 
+  Q19 |>
+  summarise(cor = cor(`Animal Lore and Totemism`, `Earth Magic and Fertility Rituals`), .by = group)
 
 
-  knitr::kable(Q21)
+knitr::kable(Q21)
 ```
 
 ## Question 22
 
 ```{r}
-
 grp <- max(abs(Q21$cor)) # group 15
 
 Q22 <-
-  Q19 |> 
-  filter(group==15)
+  Q19 |>
+  filter(group == 15)
 
-ggplot(Q22, aes(`Animal Lore and Totemism`,`Earth Magic and Fertility Rituals`))+
-  geom_point(alpha = 0.6)+
-  theme_clean()+
+ggplot(Q22, aes(`Animal Lore and Totemism`, `Earth Magic and Fertility Rituals`)) +
+  geom_point(alpha = 0.6) +
+  theme_clean() +
   labs(
     title = "Average grades in Earth Magic and Fertility Rituals as a function the average grades in Animal Lore and Totemism in group 15"
   )
-
 ```
 
 ## Question 23
 
 ```{r}
 final <-
-  Q19 |> 
-  reframe(final_grade = sum(3:12)/(12-3), .by = id ,group = first(group), sex = first(sex)) |>
-  arrange(desc(final_grade)) |> 
+  Q19 |>
+  mutate(
+    final_grade = rowMeans(across(!c(id, group, sex)),
+      na.rm = TRUE
+    ))|>
+  select(final_grade,id,group,sex) |> 
+  arrange(desc(final_grade)) |>
   relocate(final_grade, .after = last_col())
-  
 ```
 
 ## Question 24
 
 ```{r}
-
+ggplot(final, aes(final_grade)) +
+  geom_histogram(binwidth = 0.5) +
+  facet_wrap(~group)+
+  theme_clean() +
+  labs(
+    title = "Differences in final grades between groups"
+  )
 ```
-
