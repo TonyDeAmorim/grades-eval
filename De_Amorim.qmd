@@ -147,3 +147,29 @@ knitr::kable(max_table)
 ## Question 10
 
 The data set contains  `r sum(!is.na(grades$grade))` grades.
+
+## Question 11
+
+```{r}
+
+merged <- 
+  students |>
+  left_join(grades, by = "id") 
+  
+
+
+merged_Q11 <-
+  merged |> 
+  filter(course_id == 7) |> 
+  summarise(mean_grade = mean(grade, na.rm = TRUE), .by = group )
+
+ggplot(merged_Q11, aes(mean_grade, group))+
+  geom_col()+
+  theme_clean()+
+  labs(
+    title = "Distribution of grades in Hunting and Gathering Skills by group"
+  )
+
+
+```
+
