@@ -213,7 +213,7 @@ grades_per_student <-
 
 grades_per_student_13 <-
   grades_per_student |> 
-  slice_tail(n = 5) 
+  slice_tail(n = 10) 
 
 knitr::kable(grades_per_student_13)
 
@@ -257,9 +257,27 @@ grades_per_student_15 <-
     .by = id
   ) |>
   select(id, group, n_grades) |>
-  arrange(desc(n_grades)) |>
-  slice_head(n = 10)
+  arrange(desc(n_grades)) 
+
+grades_per_student_15_sliced <-
+  grades_per_student_15 |> 
+  slice_tail(n = 5) 
 
 knitr::kable(grades_per_student_15)
+```
+
+## Question 16
+
+```{r}
+grades_per_student_16 <- 
+  grades_per_student_15 |> 
+  summarise(n = n(), .by =n_grades)
+
+ggplot(grades_per_student_16, aes(n_grades, n))+
+  geom_col()+
+  theme_clean()+
+  labs(
+    title = "Distribution of number of grades"
+  )
 ```
 
