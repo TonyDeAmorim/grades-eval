@@ -81,3 +81,15 @@ ggplot(students, aes(y = group))+
 
 ```
 
+
+## Question 6 
+
+```{r}
+ggplot(students, aes(y = group))+
+  geom_bar(aes(fill = sex))+
+  theme_clean()+
+  labs(
+    title = "Distribution of students by group and by gender"
+  )
+```
+
