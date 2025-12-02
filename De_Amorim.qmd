@@ -57,6 +57,8 @@ The birth_date column of the students data frame is of class `r class(students$s
 ### Question 4 
 
 ```{r}
+#| message: false
+#| warning: false
 
 grades <- read_delim("Database/grades.csv", 
     delim = ":", 
@@ -68,6 +70,8 @@ grades <- read_delim("Database/grades.csv",
 ## Question 5
 
 ```{r}
+#| message: false
+#| warning: false
 library(ggplot2)
 library(ggthemes)
 
@@ -139,3 +143,7 @@ knitr::kable(max_table)
 
 ```
 
+# Simple Grade analysis
+## Question 10
+
+The data set contains  `r sum(!is.na(grades$grade))` grades.
