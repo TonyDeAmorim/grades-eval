@@ -326,3 +326,17 @@ knitr::kable(Q19_sliced)
 
 ```
 
+## Question 20
+
+```{r}
+
+ggplot(Q19, aes(`Astronomy and Celestial Navigation`, `Drumming and Music`))+
+  geom_point(alpha = 0.6)+
+  theme_clean()+
+  labs(
+    title = "Average grades in Drumming and Music as a function of the average grades in As-
+tronomy and Celestial Navigation"
+  )
+
+```
+
