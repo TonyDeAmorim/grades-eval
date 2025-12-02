@@ -93,3 +93,22 @@ ggplot(students, aes(y = group))+
   )
 ```
 
+## Question 7
+
+```{r}
+library(lubridate)
+
+students <-
+  students |> 
+  mutate(age = round(time_length(today() - birth_date, unit = "year"), 1))
+
+ggplot(students, aes(x=age))+
+  geom_density()+
+  theme_clean()+
+  labs(
+    title = "Distribution of students by age"
+  )
+
+```
+
+
