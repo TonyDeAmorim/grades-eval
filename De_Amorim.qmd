@@ -7,7 +7,9 @@ toc: true
 Access the repo [here](https://github.com/TonyDeAmorim/grades-eval)
 
 # Introduction
+
 ## Study organisation
+
 ### Question 1
 
 ```{r}
@@ -32,6 +34,7 @@ kable(courses)
 ```
 
 ## Students
+
 ### Question 3
 
 ```{r}
@@ -53,11 +56,11 @@ students <-
 
 ```
 
-The birth_date column of the students data frame is of class `r class(students$birth_date)`.
-The birth_date column of the students data frame is of class `r class(students$sex)`.
+The birth_date column of the students data frame is of class `r class(students$birth_date)`. The birth_date column of the students data frame is of class `r class(students$sex)`.
 
 ## Grades
-### Question 4 
+
+### Question 4
 
 ```{r}
 #| message: false
@@ -70,6 +73,7 @@ grades <- read_delim("Database/grades.csv",
 ```
 
 # Student population analysis
+
 ## Question 5
 
 ```{r}
@@ -88,8 +92,7 @@ ggplot(students, aes(y = group))+
 
 ```
 
-
-## Question 6 
+## Question 6
 
 ```{r}
 ggplot(students, aes(y = group))+
@@ -147,9 +150,10 @@ knitr::kable(max_table)
 ```
 
 # Simple Grade analysis
+
 ## Question 10
 
-The data set contains  `r sum(!is.na(grades$grade))` grades.
+The data set contains `r sum(!is.na(grades$grade))` grades.
 
 ## Question 11
 
@@ -177,11 +181,11 @@ ggplot(merged_Q11, aes(mean_grade, group))+
 ## Question 12
 
 ```{r}
-merged_Q12 <-
+merged_full <-
   merged |> 
   left_join(courses, by = "course_id") 
 
-ggplot(merged_Q12, aes(x=grade))+
+ggplot(merged_full, aes(x=grade))+
   geom_histogram( na.rm=TRUE, binwidth = 0.7)+
   facet_wrap(~trimester)+
   theme_clean()+
@@ -192,3 +196,33 @@ ggplot(merged_Q12, aes(x=grade))+
 ```
 
 # Attendance analysis
+
+## Question 13
+
+```{r}
+grades_per_student <-
+  merged_full |>
+  reframe(
+    n_grades = sum(!is.na(grade)),
+    group = first(group),
+    sex   = first(sex),
+    .by = id
+  ) |>
+  select(id, group, sex, n_grades) |>
+  arrange(id) |> 
+  slice_tail(n = 5) |>
+  knitr::kable() 
+
+
+
+
+```
+
+
+
+|        |     |
+|--------|-----|
+| Mean   |  `r mean(grades_per_student$n_grades)`   |
+| Median |   `r median(grades_per_student$n_grades)`  |
+| Min    |    `r min(grades_per_student$n_grades)` |
+| Max    |    `r max(grades_per_student$n_grades)` |
