@@ -374,3 +374,18 @@ ggplot(final, aes(final_grade)) +
     title = "Differences in final grades between groups"
   )
 ```
+
+
+## Question 25
+
+```{r}
+ggplot(final, aes(final_grade, fill = sex)) +
+  geom_histogram(binwidth = 0.5) +
+  facet_wrap(~group)+
+  theme_clean() +
+  labs(
+    title = "Differences in final grades between groups"
+  )
+```
+
+## Question 26
