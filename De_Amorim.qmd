@@ -408,3 +408,29 @@ Q26 <-
 
 ```
 
+## Question 27
+
+```{r}
+Q27 <-
+  Q26 |> 
+  filter(final_grade >= 10 & pass_final == "Fail")
+```
+
+there is `r nrow(Q27)` such person
+
+## Question 28
+
+```{r}
+Q28 <-
+  Q26 |> 
+  summarise(
+    pass_rate = mean(pass_final == "Pass"),
+    .by = group
+  )
+
+ggplot(Q28, aes(group, pass_rate)) +
+  geom_col() +
+  labs(title = "Pass rate per group") +
+  theme_clean()
+```
+
