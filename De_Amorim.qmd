@@ -311,7 +311,7 @@ ggplot(grades_per_student_15, aes(group,n_grades, fill = group))+
 
 Q19 <-
   merged_full |> 
-  reframe(mean = mean(grade, na.rm =TRUE), .by = c(id,course),group = first(group)) |> 
+  reframe(mean = mean(grade, na.rm =TRUE), .by = c(id,course),group = first(group), sex = first(sex)) |> 
   pivot_wider(
     names_from = course,
     values_from = mean
@@ -368,6 +368,23 @@ ggplot(Q22, aes(`Animal Lore and Totemism`,`Earth Magic and Fertility Rituals`))
   labs(
     title = "Average grades in Earth Magic and Fertility Rituals as a function the average grades in Animal Lore and Totemism in group 15"
   )
+
+```
+
+## Question 23
+
+```{r}
+final <-
+  Q19 |> 
+  reframe(final_grade = sum(3:12)/(12-3), .by = id ,group = first(group), sex = first(sex)) |>
+  arrange(desc(final_grade)) |> 
+  relocate(final_grade, .after = last_col())
+  
+```
+
+## Question 24
+
+```{r}
 
 ```
 
