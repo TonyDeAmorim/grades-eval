@@ -3,3 +3,15 @@ title: "De Amorim"
 format: html
 ---
 
+# Study organisation
+## Question 1
+
+```{r}
+#| label: data loading
+
+library(readr)
+courses <- read_csv("Database/courses.csv")
+
+
+```
+
