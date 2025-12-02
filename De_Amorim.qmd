@@ -126,3 +126,16 @@ knitr::kable(age_median)
 ```
 
 ## Question 9
+
+```{r}
+
+max_table <-
+  students |> 
+  slice_max(age, by = group) |> 
+  select(!birth_date) |> 
+  arrange(desc(age))
+
+knitr::kable(max_table)
+
+```
+
