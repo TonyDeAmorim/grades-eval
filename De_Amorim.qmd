@@ -18,6 +18,7 @@ courses <- read_csv("Database/courses.csv")
 ```
 
 ## Question 2
+
 ```{r}
 #| label: data display
 
@@ -25,4 +26,28 @@ library(knitr)
 kable(courses)
 
 ```
+
+# Students
+## Question 3
+
+```{r}
+#| label: Question 3
+#| message: false
+#| warning: false
+
+library(tidyverse)
+students <- read_csv("Database/students.csv")
+spec(students)
+
+students <-
+  students |>
+  mutate(sex = factor(sex, 
+                      levels = c("M", "F"),
+                      labels = c("Male", "Female")))
+
+```
+
+The birth_date column of the students data frame is of class `r class(students$birth_date)`.
+The birth_date column of the students data frame is of class `r class(students$sex)`.
+
 
