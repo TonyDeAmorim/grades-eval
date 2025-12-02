@@ -263,7 +263,7 @@ grades_per_student_15_sliced <-
   grades_per_student_15 |> 
   slice_tail(n = 5) 
 
-knitr::kable(grades_per_student_15)
+knitr::kable(grades_per_student_15_sliced)
 ```
 
 ## Question 16
@@ -319,7 +319,8 @@ Q19 <-
 
 Q19_sliced <-
   Q19 |>
-  select(1:4)
+  select(1:4) |> 
+  slice_tail(n=10)
 
 knitr::kable(Q19_sliced)
   
@@ -339,4 +340,17 @@ tronomy and Celestial Navigation"
   )
 
 ```
+
+## Question 21
+
+```{r}
+Q21 <-
+  Q19 |> 
+  summarise(cor = cor(`Animal Lore and Totemism`,`Earth Magic and Fertility Rituals`), .by =group) 
+
+
+  knitr::kable(Q21)
+```
+
+## Question 22
 
