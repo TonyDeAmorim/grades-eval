@@ -256,7 +256,7 @@ grades_per_student_15 <-
     sex   = first(sex),
     .by = id
   ) |>
-  select(id, group, n_grades) |>
+  select(id, group, sex, n_grades) |>
   arrange(desc(n_grades)) 
 
 grades_per_student_15_sliced <-
@@ -290,5 +290,17 @@ ggplot(grades_per_student_15, aes(group,n_grades, fill = group))+
   labs(
     title = "Distribution of number of grades by group"
   )
+```
+
+## Question 18
+
+```{r}
+ggplot(grades_per_student_15, aes(group,n_grades, fill = group))+
+  geom_violin()+
+  theme_clean()+
+  labs(
+    title = "Distribution of number of grades by group"
+  )+
+  facet_wrap(~sex)
 ```
 
