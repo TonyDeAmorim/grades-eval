@@ -1,10 +1,11 @@
 ---
 title: "De Amorim"
 format: html
+toc: true
 ---
-
-# Study organisation
-## Question 1
+# Introduction
+## Study organisation
+### Question 1
 
 ```{r}
 #| label: data loading
@@ -17,7 +18,7 @@ courses <- read_csv("Database/courses.csv")
 
 ```
 
-## Question 2
+### Question 2
 
 ```{r}
 #| label: data display
@@ -27,8 +28,8 @@ kable(courses)
 
 ```
 
-# Students
-## Question 3
+## Students
+### Question 3
 
 ```{r}
 #| label: Question 3
@@ -43,21 +44,40 @@ students <-
   students |>
   mutate(sex = factor(sex, 
                       levels = c("M", "F"),
-                      labels = c("Male", "Female")))
+                      labels = c("Male", "Female")),
+         group = factor(group),
+         id = as.integer(group))
 
 ```
 
 The birth_date column of the students data frame is of class `r class(students$birth_date)`.
 The birth_date column of the students data frame is of class `r class(students$sex)`.
 
-# Grades
-## Question 4 
+## Grades
+### Question 4 
 
 ```{r}
 
 grades <- read_delim("Database/grades.csv", 
     delim = ":", 
     na = "$")
+
+```
+
+# Student population analysis
+## Question 5
+
+```{r}
+library(ggplot2)
+library(ggthemes)
+
+ggplot(students, aes(y = group))+
+  geom_bar(aes(fill = group))+
+  theme_clean()+
+  labs(
+    title = "Distribution of students by group"
+  )+
+  theme(legend.position = "none")
 
 ```
 
