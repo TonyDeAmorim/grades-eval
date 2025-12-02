@@ -209,9 +209,13 @@ grades_per_student <-
     .by = id
   ) |>
   select(id, group, sex, n_grades) |>
-  arrange(id) |> 
-  slice_tail(n = 5) |>
-  knitr::kable() 
+  arrange(id) 
+
+grades_per_student_13 <-
+  grades_per_student |> 
+  slice_tail(n = 5) 
+
+knitr::kable(grades_per_student_13)
 
 
 
@@ -226,3 +230,16 @@ grades_per_student <-
 | Median |   `r median(grades_per_student$n_grades)`  |
 | Min    |    `r min(grades_per_student$n_grades)` |
 | Max    |    `r max(grades_per_student$n_grades)` |
+
+## Question 14
+
+```{r}
+ggplot(grades_per_student, aes(n_grades))+
+  geom_histogram(binwidth = 0.5)+
+  facet_wrap(~sex)+
+  theme_clean()+
+  labs(
+    title = "Distribution of number of grades by gender"
+  )
+```
+
