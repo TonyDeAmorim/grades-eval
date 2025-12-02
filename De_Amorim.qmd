@@ -243,3 +243,23 @@ ggplot(grades_per_student, aes(n_grades))+
   )
 ```
 
+
+## Question 15
+
+```{r}
+grades_per_student_15 <-
+  merged_full |>
+  filter(course_id == 8) |> 
+  reframe(
+    n_grades = sum(!is.na(grade)),
+    group = first(group),
+    sex   = first(sex),
+    .by = id
+  ) |>
+  select(id, group, n_grades) |>
+  arrange(desc(n_grades)) |>
+  slice_head(n = 10)
+
+knitr::kable(grades_per_student_15)
+```
+
