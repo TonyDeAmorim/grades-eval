@@ -433,4 +433,3 @@ ggplot(Q28, aes(group, pass_rate)) +
   labs(title = "Pass rate per group") +
   theme_clean()
 ```
-
